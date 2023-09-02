@@ -1,0 +1,3 @@
+from math import log2
+
+print("Solucion la 1ra Tarea\n Teoria de la Información")
