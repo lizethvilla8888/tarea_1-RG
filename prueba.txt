@@ -15,10 +15,12 @@ def num_caracteres():
 def ordenar(diccionario):
   claves = list(diccionario.keys()) #Devuelve una lista de todas las claves en el diccioanrio
   claves.sort(key=lambda c: dicc[c], reserve = True)
-  for clave in claves:
-    valor = diccionario[clave]
-    msm = "La clave {clave} tiene un calor de {valor}"
+  for i in claves:
+    j = diccionario[i]
+    msm = "La clave {i} tiene un valor de {j}"
     print(msm)
   return "\n"
+
+
     
   
