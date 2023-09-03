@@ -13,13 +13,28 @@ def num_caracteres():
 
 #Funcion que recibe un diccionario organiza sus claves según sus valores en orden descendente e imprime las claves y sus valores correspondientes en ese orden.
 def ordenar(diccionario):
-  claves = list(diccionario.keys()) #Devuelve una lista de todas las claves en el diccioanrio
+  claves = list(diccionario.keys()) 
   claves.sort(key=lambda c: dicc[c], reserve = True)
   for i in claves:
     j = diccionario[i]
     msm = "La clave {i} tiene un valor de {j}"
     print(msm)
   return "\n"
+
+#Funcion que retorna un diccionario donde las claves son simbolos individuales del texto y los valores son las frecuencia de aparicion
+def numCarateres_individuales():
+  Texto = leer_archivo()
+  diccionario = {}
+  for x in Texto:
+    if x not in diccionario:
+      diccionario[x] = 1
+    else:
+      num = diccionario[x]
+      diccionario[x] = num + 1
+  return diccionario
+
+#Funcion que devuelve un diccionario en donde las claves son pares de simbolos consecutivos y su valor es el numero total de veces que cada par aparece 
+
 
 
     
