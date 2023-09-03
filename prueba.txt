@@ -34,8 +34,40 @@ def numCarateres_individuales():
   return diccionario
 
 #Funcion que devuelve un diccionario en donde las claves son pares de simbolos consecutivos y su valor es el numero total de veces que cada par aparece 
+def pares_repetidos():
+  diccionario = {}
+  Texto = leer_archivo()
+  cadena = ""
+  n = 0
+  for x in Texto:
+    cadena += x
+    n += 1
+    if n == 2:
+      if cadena not in diccionario:
+        diccionario[cadena] = 1
+      else:
+        npares = diccionario[cadena]
+        diccionario[cadena] = npares + 1
+      n = 0
+      cadena = ""
+  return diccionario
 
-
-
-    
-  
+#Funcion que hacen un conteo de los pares repetidos y retorna un diccionario con cada uno de ellos(claves) y el numero de veces que aparece(valor).
+def pares_repetidos():
+  Texto = leer_archivo()
+  cadena = ""
+  n = 0
+  diccionario = {}
+  for x in Texto:
+    cadena += i
+    if n == 1:
+      if cadena not in diccionario:
+          diccionario[cadena] = 1
+                
+      else:
+          npares = diccionario[cadena]
+          diccionario[cadena] = npares + 1
+      n = 0
+      cadena = i
+    n += 1
+  return diccionario
