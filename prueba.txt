@@ -52,7 +52,7 @@ def pares_repetidos():
       cadena = ""
   return diccionario
 
-#Funcion que hacen un conteo de los pares repetidos y retorna un diccionario con cada uno de ellos(claves) y el numero de veces que aparece(valor).
+#Funcion que hace un conteo de los pares repetidos y retorna un diccionario con cada uno de ellos(claves) y el numero de veces que aparece(valor).
 def pares_repetidos():
   Texto = leer_archivo()
   cadena = ""
@@ -71,3 +71,63 @@ def pares_repetidos():
       cadena = i
     n += 1
   return diccionario
+
+
+def punto_4():
+  print("\n","Cuarto punto: \n")
+  texto = lectura_archivo()
+  longitud = len(texto)
+  estados = numCarateres_individuales()#Funcion4
+  pares = repeticion_de_pares() #Funcion6
+  p_condicional = {}
+  for i in pares.keys():
+      for j in estados.keys():
+          if i[:len(j)] == j:
+              p_condicional[i] = pares[i]/estados[j]
+  
+  #print(estados)
+  #print()
+  #print(pares)
+  #print()
+  entropia_dict = {}
+
+  for i, valor in p_condicional.items():
+      entropia = valor * log2(1/valor)
+      entropia_dict[i] = entropia
+  
+  entropia_estados = {}
+
+  for clave in entropia_dict:
+      prefijo = clave[:-1]
+      valor = entropia_dict[clave]
+      if prefijo in entropia_estados:
+          entropia_estados[prefijo] += valor
+      else:
+          entropia_estados[prefijo] = valor
+  
+  for i in estados:
+      estados[i] /= longitud
+
+  entropias_ponderadas = {}  
+  for clave in entropia_estados:
+      entropias_ponderadas[clave] = entropia_estados[clave] * estados[clave]
+
+  suma = sum(entropias_ponderadas.values())
+
+  #print(prob_condicional)
+  #print()
+  #print(entropia_dict)
+  #print()
+  #print(entropia_estados)
+  #print()
+  #print(estados)
+  #print()
+  print("La entropia del cuarto punto es:",suma,"\n")
+  print("La información total den este caso seía:",suma*num_caracteres(),"\n")
+  return "------------------------------------------------"
+
+print("------------------------------------------------")
+print("La entropia del primer punto es:","\n",punto_1(),"\n")
+print("La entropia del segundo punto es: ", "\n",punto_2(),"\n")
+print("La entropia del tercer punto es:", "\n",punto_3(),"\n")
+print(punto_4())
