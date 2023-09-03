@@ -1,3 +1,24 @@
 from math import log2
-
+#Funcion que recibe un archivo de texto y retorna una cadena
 print("Solucion la 1ra Tarea\n Teoria de la Información")
+def leer_archivo():
+  x = open('capitulo.txt', 'r', encoding = 'utf-8')
+  Texto = f.read()
+  return Texto
+
+#Funcion para calcular el numero de caracteres que hay en el texto
+def num_caracteres():
+  num = leer_archivo()
+  retur len(num)
+
+#Funcion que recibe un diccionario organiza sus claves según sus valores en orden descendente e imprime las claves y sus valores correspondientes en ese orden.
+def ordenar(diccionario):
+  claves = list(diccionario.keys()) #Devuelve una lista de todas las claves en el diccioanrio
+  claves.sort(key=lambda c: dicc[c], reserve = True)
+  for clave in claves:
+    valor = diccionario[clave]
+    msm = "La clave {clave} tiene un calor de {valor}"
+    print(msm)
+  return "\n"
+    
+  
