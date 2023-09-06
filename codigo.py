@@ -5,7 +5,7 @@ print("\n Solución a la tarea número 1 \n de Teoría de la Información \n")
 #Funcion que recibe un archivo de texto y retorna una cadena
 def leer_archivo():
     with open('ejemplo1.txt', 'r', encoding='utf-8') as archivo:
-        contenido = archivo.read()
+        contenido = archivo.read() 
     return contenido
 
 #Funcion para calcular el numero de caracteres que hay en el texto
@@ -135,9 +135,8 @@ def calcular_entropia_punto_3():
     print("La información total : ", entropia_del_punto_tres * numero_de_pares)
     return entropia_del_punto_tres
 
-# función calcula la entropía Suponiendo que hay dependencia de primer orden
+# función que calcula la entropía suponiendo que hay dependencia de primer orden
 def calcular_entropia_punto_4():
-    """Las entropías de los estados ponderadas por la probabilidad de ocurrencia de los estados."""
     print("\n", "Cuarto punto: \n")
     texto = leer_archivo()
     longitud = len(texto)
@@ -190,7 +189,7 @@ def calcular_entropia_punto_5():
     for clave_pares in pares.keys():
         for sub_clave_pares in pares.keys():
             if clave_pares[:len(sub_clave_pares)] == sub_clave_pares:
-                prob_condicional_2do_orden[clave_pares] = pares[clave_pares] / pares[sub_clave_pares]
+                prob_condicional_2do_orden[clave_pares] = (pares[clave_pares] / pares[sub_clave_pares])
 
     # Calcular las entropías de los estados de segundo orden ponderadas por sus probabilidades
     entropia_estados_2do_orden = {}
