@@ -1,0 +1,244 @@
+from math import log2
+
+print("\n Solución a la tarea número 1 \n de Teoría de la Información \n")
+
+#Funcion que recibe un archivo de texto y retorna una cadena
+def leer_archivo():  
+    with open('ejemplo1.txt', 'r', encoding='utf-8') as archivo:   # with para abrir un archivo llamado 'ejemplo1.txt' en modo de lectura ('r') y se especifica que el archivo está codificado en UTF-8archivo se utiliza como un alias para el archivo abierto.
+        contenido = archivo.read() # lee todo el contenido del archivo abierto (archivo) y lo almacena en la variable contenido
+    return contenido
+
+#Funcion para calcular el numero de caracteres que hay en el texto
+def contar_caracteres(): 
+    texto = leer_archivo()  
+    return len(texto)
+
+#Funcion que recibe un diccionario organiza sus claves según
+#sus valores en orden descendente e imprime las claves y sus valores correspondientes en ese orden.
+# 
+def ordenar_diccionario(diccionario):
+    claves = list(diccionario.keys())
+    claves.sort(key=lambda x: diccionario[x], reverse=True)
+    for clave in claves:
+        valor = diccionario[clave]
+        mensaje = f"La clave {clave} tiene un valor de {valor}"
+        print(mensaje)
+    return "\n"
+
+#Funcion que retorna un diccionario donde las claves son
+#simbolos individuales del texto y los valores son las frecuencia de aparicion
+def contar_caracteres_individuales():
+    "Retorna un diccionario donde las keys son el símbolo y Value es su frecuencia de aparición"
+    texto = leer_archivo()  
+    diccionario = {}
+    for caracter in texto:
+        if caracter not in diccionario:
+            diccionario[caracter] = 1
+        else:
+            num = diccionario[caracter]
+            diccionario[caracter] = num + 1
+    return diccionario
+
+#Funcion que devuelve un diccionario en donde las claves son pares
+#de simbolos consecutivos y su valor es el numero total de veces que cada par aparece 
+# "abcdef", esta función contará "ab", "cd", y "ef" como pares diferentes.
+def contar_repeticion_pares_fuente_extendida():
+    "Retorna un diccionario de fuente extendida, dónde keys es el par y values el número total de pares"
+    texto = leer_archivo()  
+    diccionario = {}
+    cadena = ""
+    num = 0
+    for caracter in texto:
+        cadena += caracter
+        num += 1
+        if num == 2:
+            if cadena not in diccionario:
+                diccionario[cadena] = 1
+            else:
+                numero_pares = diccionario[cadena]
+                diccionario[cadena] = numero_pares + 1
+            num = 0
+            cadena = ""
+    return diccionario
+
+#Funcion que hace un conteo de los pares repetidos y retorna un diccionario con
+#cada uno de ellos(claves) y el numero de veces que aparece(valor).
+#"abcdef", esta función contará "ab", "bc", "cd", "de", y "ef" como pares diferentes.
+def contar_repeticion_pares():
+    "Retorna un diccionario donde: keys son pares de símbolos y Value es su frecuencia de aparición"
+    texto = leer_archivo()  
+    diccionario = {}
+    cadena = ""
+    num = 0
+    for caracter in texto:
+        cadena += caracter
+        if num == 1:
+            if cadena not in diccionario:
+                diccionario[cadena] = 1
+            else:
+                numero_pares = diccionario[cadena]
+                diccionario[cadena] = numero_pares + 1
+            num = 0
+            cadena = caracter
+        num += 1
+    return diccionario
+
+# ) Funcion que calcula la entropía de una secuencia dada suponiendo que los símbolos del texto son igualmente probables
+def calcular_entropia_secuencia():
+    "Retorna la entropia de la secuencia"
+    frecuencia_caracteres = contar_caracteres_individuales() # devuelve simbolos y cuantas veces se repiten 
+    numero_simbolos_dif = len(frecuencia_caracteres.keys()) # devuelve cuantos simbolos hay en total en todo el texto 
+    probabilidad_ocurrencia = 1 / numero_simbolos_dif #calcula la probabilidad de los simbolos tomandolo como igualmente probables 
+    entropia = log2(1 / probabilidad_ocurrencia) # calcula entropia de los simbolos igualmente probables  
+    print("Número de caracteres diferentes : ", numero_simbolos_dif) #  devuelve cuantos simbolos hay en total en todo el texto 
+    print("Número total de caracteres : ", contar_caracteres()) #  calcular el numero de caracteres que hay en el texto
+    print("La información total del texto si los símbolos fueran igualmente probables: ", entropia * contar_caracteres()) # me da la inormacion total del texto 
+    #calculando entropia * el numero total de caracteres de todo el texto 
+    return entropia
+
+# Funcion que encuentra los símbolos que se repiten un número específico de veces en un texto.
+def encontrar_simbolos_con_repeticion(numero, diccionario):
+    lista = []
+    for clave, valor in diccionario.items():
+        if valor == numero:
+            lista.append(clave) #retorna lista con el numero de veces que se repiten los simbolos 
+    return lista
+
+# función imprime la mayor probabilidad de ocurrencia, el símbolo o pares de símbolos
+#  correspondientes a esa probabilidad y cuántas veces se repiten. 
+def calcular_entropia_puntos_2_y_3(tipo_de_diccionario, divisor):   #En resumen, esta función calcula la entropía de un conjunto de datos 
+    prob_ocurrencia_mayor = 0 #asumiendo que los símbolos son igualmente probables y proporciona información adicional sobre el símbolo o 
+    valor_maximo = 0 #símbolos más probables en el conjunto de datos.   mira cual es el simbolo que mas se repite y calcula su en 
+    entropia = 0
+    informacion = 0
+
+    for valor in tipo_de_diccionario.values():
+        probabilidad_ocurrencia_por_simbolo = valor / divisor
+        informacion = log2(1 / probabilidad_ocurrencia_por_simbolo)
+        entropia = entropia + informacion * probabilidad_ocurrencia_por_simbolo
+        if prob_ocurrencia_mayor < probabilidad_ocurrencia_por_simbolo:
+            prob_ocurrencia_mayor = probabilidad_ocurrencia_por_simbolo
+            valor_maximo = valor
+
+    print("La mayor probabilidad de el símbolo de mayor ocurrencia es: ", prob_ocurrencia_mayor)
+    print("Esta probabilidad pertenece al símbolo: ", encontrar_simbolos_con_repeticion(valor_maximo, tipo_de_diccionario))
+    print("De un símbolo que se repite: ", valor_maximo, "veces")
+    return entropia
+
+# funcion que calcula la entropía , incluyendo la información total y el orden de ocurrencia de caracteres individuales en el texto.
+def calcular_entropia_punto_2(): # Luego, devuelve la entropía calculada.
+    print("Segundo punto: \n") # frecuencia de aparcion de cd simbolo, numero total de simbilos 45394 
+    entropia_del_punto_dos = calcular_entropia_puntos_2_y_3(contar_caracteres_individuales(), contar_caracteres())
+    print("La información total : ", entropia_del_punto_dos * contar_caracteres())
+    print("El orden de ocurrencia es: ", ordenar_diccionario(contar_caracteres_individuales()))
+    return entropia_del_punto_dos
+
+#  función calcula la entropía  Analizando la probabilidad de ocurrencia por pares de caracteres
+def calcular_entropia_punto_3():
+    print("Tercer punto: \n")
+    frecuencia_pares = contar_repeticion_pares_fuente_extendida() # "abcdef", esta función contará "ab", "cd", y "ef" como pares diferentes.
+    numero_de_pares = sum(frecuencia_pares.values())
+    print("El número de pares distintos: ", numero_de_pares)#diccionario con pares diferentes, suma total de el numero de veces que los pares se repiten 
+    entropia_del_punto_tres = calcular_entropia_puntos_2_y_3(frecuencia_pares, numero_de_pares)
+    print("La información total : ", entropia_del_punto_tres * numero_de_pares)
+    return entropia_del_punto_tres
+
+# función calcula la entropía Suponiendo que hay dependencia de primer orden
+def calcular_entropia_punto_4():
+    """Las entropías de los estados ponderadas por la probabilidad de ocurrencia de los estados."""
+    print("\n", "Cuarto punto: \n")
+    texto = leer_archivo()
+    longitud = len(texto) # 45394 caracteres 
+    estados = contar_caracteres_individuales()  # diccionario de 67 claves, cuyo valor es el numero de veces que se repite cada simbolo
+    pares = contar_repeticion_pares() #"abcdef", esta función contará "ab", "bc", "cd", "de", y "ef" como pares diferentes.
+    prob_condicional = {} #diccionario 
+    for clave_pares in pares.keys():
+        for sub_clave_estados in estados.keys():
+            PrimeraLetra=clave_pares[:1] 
+            NumeroVecesLetra=estados[PrimeraLetra]  # Obtiene el número de veces que aparece el primer símbolo (estado) en el texto.
+            Prob1=pares[clave_pares]/NumeroVecesLetra # Calcula la probabilidad condicional dividiendo la frecuencia de aparición del par de símbolos por el número 
+            #de veces que aparece el primer símbolo (estado).
+            prob_condicional[clave_pares]=Prob1 #  las claves son los pares de símbolos y los valores son las probabilidades condicionales.
+
+    entropy_dict = {}
+    for clave_prob_condicional, valor_prob_condicional in prob_condicional.items():
+        entropy = valor_prob_condicional * log2(1 / valor_prob_condicional)
+        entropy_dict[clave_prob_condicional] = entropy
+
+    entropia_estados = {}
+    for clave_entropy_dict in entropy_dict:
+        prefijo = clave_entropy_dict[:-1]
+        valor = entropy_dict[clave_entropy_dict]
+        if prefijo in entropia_estados:
+            entropia_estados[prefijo] += valor
+        else:
+            entropia_estados[prefijo] = valor
+
+    for clave_estados in estados:
+        estados[clave_estados] /= longitud
+
+    entropias_ponderadas = {}
+    for clave_entropia_estados in entropia_estados:
+        entropias_ponderadas[clave_entropia_estados] = entropia_estados[clave_entropia_estados] * estados[clave_entropia_estados]
+
+    suma_entropias_ponderadas = sum(entropias_ponderadas.values())
+
+    print("La entropía del cuarto punto es:", suma_entropias_ponderadas, "\n")
+    print("La información total en este caso sería:", suma_entropias_ponderadas * contar_caracteres(), "\n")
+    return "------------------------------------------------"
+
+
+def calcular_entropia_punto_5():
+    print("Quinto punto (Dependencia de segundo orden):\n")
+
+    texto = leer_archivo()
+    longitud = len(texto) # 45394 caracteres 
+    individuales = contar_caracteres_individuales() # diccionario de 67 claves, cuyo valor es el numero de veces que se repite cada simbolo
+    pares = contar_repeticion_pares() #
+
+    #Sacar Tripletas
+    cadena = ""
+    tripleta = {}
+    for i in range(len(texto) - 1):
+         clave = texto[i:i+3]  # Tomamos una subcadena de longitud 3
+         if clave not in tripleta:
+            tripleta[clave] = 1
+         else:
+            tripleta[clave] += 1
+    
+    prob_condicional_pares = {}
+    entropia_tripletas = {}
+    informacion_tripleta={}
+    TotalTripletas=sum(tripleta.values())
+    for Llave in tripleta.keys():
+        Letra=Llave[0:1]
+        Par=Llave[1:]
+        ProbabilidadLetra=individuales[Letra]/sum(individuales.values())
+        TerminaPar=0
+        for LlavePar in tripleta.keys():
+            if LlavePar[1:]==Par:
+                TerminaPar+=tripleta[LlavePar]
+        ProbabilidadPar=TerminaPar/TotalTripletas
+        entropia_tripletas [Llave]= log2(ProbabilidadLetra/ProbabilidadPar)
+        informacion_tripleta[Llave] = log2(ProbabilidadLetra/ProbabilidadPar) * (tripleta[Llave]/TotalTripletas)
+    EntropiaTotal=sum(entropia_tripletas.values())
+    InformacionTotal=sum(informacion_tripleta.values)
+
+    for clave_pares in pares.keys():
+        for sub_clave_estados in individuales.keys():
+            PrimeraLetra=clave_pares[:1] 
+            NumeroVecesLetra=individuales[PrimeraLetra] 
+            Prob1=pares[clave_pares]/NumeroVecesLetra
+            prob_condicional_pares[clave_pares]=Prob1
+
+    caracter_individual = contar_caracteres_individuales
+ 
+
+print("------------------------------------------------")
+print("La entropía del primer punto es:", "\n", calcular_entropia_secuencia(), "\n")
+print("La entropía del segundo punto es: ", "\n", calcular_entropia_punto_2(), "\n")
+print("La entropía del tercer punto es:", "\n", calcular_entropia_punto_3(), "\n")
+print(calcular_entropia_punto_4())
+
+print(calcular_entropia_punto_5())
+
